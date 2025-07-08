@@ -46,6 +46,8 @@ Generate creative, rhythmic, and engaging rap lyrics on any topic, in any langua
 ## Security
 - Your OpenRouter API key is stored in a `.env` file and never exposed to the frontend.
 - `.env` and `node_modules/` are included in `.gitignore` for safety.
+  ![image](https://github.com/user-attachments/assets/85265945-ccca-4a08-8322-15aa1e7f86a8)
+
   ![image](https://github.com/user-attachments/assets/cc2d07bb-2d2e-414a-95cb-e98b165e4e04)
 
 
