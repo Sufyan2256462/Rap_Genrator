@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rap Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #181818;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #222;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 6px;
+      background: #ff9800;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #ffa726;
+    }
+    .rap-output {
+      margin-top: 1.5rem;
+      background: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      min-height: 80px;
+      white-space: pre-line;
+    }
+    .loading {
+      color: #ff9800;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rap Generator</h1>
+        <label for="topic">Topic:</label>
+        <input type="text" id="topicInput" placeholder="e.g., coding, pizza, space" required>
+
+        <label for="language">Language:</label>
+        <input type="text" id="language" placeholder="e.g., English, Spanish, French" value="English">
+
+        <label for="tone">Tone:</label>
+        <input type="text" id="tone" placeholder="e.g., aggressive, humorous, motivational" value="humorous">
+
+        <button id="generateBtn">Generate Rap</button>
+    <div class="rap-output" id="rapOutput"></div>
+  </div>
+  <script>
+    const btn = document.getElementById('generateBtn');
+    const topicInput = document.getElementById('topicInput');
+    const rapOutput = document.getElementById('rapOutput');
+
+    btn.addEventListener('click', async () => {
+        const topic = topicInput.value;
+        const language = document.getElementById('language').value;
+        const tone = document.getElementById('tone').value;
+      if (!topic) {
+        rapOutput.textContent = 'Please enter a topic!';
+        return;
+      }
+      rapOutput.innerHTML = '<span class="loading">Generating rap...</span>';
+      try {
+        const res = await fetch('http://localhost:3001/api/generate-rap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, language, tone })
+        });
+        const data = await res.json();
+        if (data.rap) {
+          rapOutput.textContent = data.rap;
+        } else {
+          rapOutput.textContent = 'Could not generate rap. Try again!';
+        }
+      } catch (err) {
+        rapOutput.textContent = 'Error connecting to server.';
+      }
+    });
+  </script>
+</body>
+</html>
